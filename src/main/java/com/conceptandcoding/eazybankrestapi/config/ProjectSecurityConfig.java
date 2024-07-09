@@ -23,12 +23,14 @@ public class ProjectSecurityConfig {
             requests
                     //.anyRequest().authenticated()
                     .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
-                    .requestMatchers("/notices", "/contact").permitAll()
+                    .requestMatchers("/notices", "/contact", "/register").permitAll()
         );
 
         http.formLogin(Customizer.withDefaults());
 
         http.httpBasic(Customizer.withDefaults());
+
+        http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }
