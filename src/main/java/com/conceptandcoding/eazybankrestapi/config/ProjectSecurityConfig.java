@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -29,6 +31,14 @@ public class ProjectSecurityConfig {
         http.httpBasic(Customizer.withDefaults());
 
         return http.build();
+    }
+
+    // If you saved plaintext passwords without prefix `{noop}` in db,
+    // you should have to define NoOpPasswordEncoder bean
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance(); // new NoOpPasswordEncoder() - incorrect - its immutable class
     }
 
 }
