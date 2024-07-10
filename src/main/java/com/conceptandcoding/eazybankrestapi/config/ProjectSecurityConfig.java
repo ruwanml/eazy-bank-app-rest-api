@@ -1,6 +1,7 @@
 package com.conceptandcoding.eazybankrestapi.config;
 
 import com.conceptandcoding.eazybankrestapi.filter.CsrfCookieFilter;
+import com.conceptandcoding.eazybankrestapi.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -40,7 +41,11 @@ public class ProjectSecurityConfig {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         );
 
+        // Custom filters
+
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+
+        http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class);
 
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
