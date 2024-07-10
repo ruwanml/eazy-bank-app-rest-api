@@ -48,11 +48,16 @@ public class ProjectSecurityConfig {
         // We can secure the web application APIs/paths as per our custom requirements.
 
         http.authorizeHttpRequests((requests) -> requests
-                // authorization rules
-                .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
-                .requestMatchers("/myBalance").hasAnyAuthority("VIEWBALANCE", "VIEWACCOUNT")
-                .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
-                .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                // authorization rules by AUTHORITY
+                //.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                //.requestMatchers("/myBalance").hasAnyAuthority("VIEWBALANCE", "VIEWACCOUNT")
+                //.requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                //.requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                // authorization rules by ROLES
+                .requestMatchers("/myAccount").hasRole("USER")
+                .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/myLoans").hasRole("USER")
+                .requestMatchers("/myCards").hasRole("USER")
                     // authentication rules
                     //.anyRequest().authenticated()
                     //.requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
