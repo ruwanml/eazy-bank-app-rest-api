@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 public class ProjectSecurityConfig {
@@ -14,16 +19,22 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        // CORS configurations - globally
+        // Ref: https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
+
+        http.cors((cors) -> cors
+                .configurationSource(apiConfigurationSource())
+        );
+
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
 
         // We can secure the web application APIs/paths as per our custom requirements.
 
-        http.authorizeHttpRequests(requests ->
-            requests
-                    //.anyRequest().authenticated()
-                    .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
-                    .requestMatchers("/notices", "/contact", "/register").permitAll()
+        http.authorizeHttpRequests((requests) -> requests
+                //.anyRequest().authenticated()
+                .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
+                .requestMatchers("/notices", "/contact", "/register").permitAll()
         );
 
         http.formLogin(Customizer.withDefaults());
@@ -33,6 +44,21 @@ public class ProjectSecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         return http.build();
+    }
+
+    private CorsConfigurationSource apiConfigurationSource() {
+        CorsConfiguration configs = new CorsConfiguration();
+        configs.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        //configs.setAllowedMethods(Arrays.asList("GET","POST"));
+        configs.setAllowedMethods(Arrays.asList("*"));
+        configs.setAllowCredentials(true);
+        configs.setAllowedHeaders(Arrays.asList("*"));
+        configs.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configs);
+
+        return source;
     }
 
     @Bean
