@@ -1,5 +1,6 @@
 package com.conceptandcoding.eazybankrestapi.config;
 
+import com.conceptandcoding.eazybankrestapi.filter.CsrfCookieFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -34,7 +37,10 @@ public class ProjectSecurityConfig {
 
         http.csrf((csrf) -> csrf
                 .ignoringRequestMatchers("/contact", "/register")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         );
+
+        http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()

@@ -49,12 +49,12 @@ public class LoginController {
     }
 
     @RequestMapping("/user")
-    public List<Customer> getUserDetailsAfterLogin(Authentication authentication) {
+    public Customer getUserDetailsAfterLogin(Authentication authentication) {
 
         List<Customer> customers = customerRepository.findByEmail(authentication.getName());
 
         if (!customers.isEmpty()) {
-            return customers;
+            return customers.get(0);
         } else {
             return null;
         }
