@@ -26,6 +26,16 @@ public class ProjectSecurityConfig {
                 .configurationSource(apiConfigurationSource())
         );
 
+        // By default, CSRF protection is enabled.
+        // You can also consider whether only certain endpoints do not require CSRF protection and configure an ignoring rule.
+        // ex: '/contact' and '/register' - public POST APIs
+
+        // Ref: https://docs.spring.io/spring-security/reference/servlet/exploits/csrf.html
+
+        http.csrf((csrf) -> csrf
+                .ignoringRequestMatchers("/contact", "/register")
+        );
+
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
 
@@ -41,7 +51,7 @@ public class ProjectSecurityConfig {
 
         http.httpBasic(Customizer.withDefaults());
 
-        http.csrf(csrf -> csrf.disable());
+        //http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }
