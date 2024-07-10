@@ -2,12 +2,17 @@ package com.conceptandcoding.eazybankrestapi.controller;
 
 import com.conceptandcoding.eazybankrestapi.entity.Customer;
 import com.conceptandcoding.eazybankrestapi.repository.CustomerRepository;
+import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class LoginController {
@@ -41,5 +46,17 @@ public class LoginController {
                     .body("An exception occured due to " + ex.getMessage());
         }
         return response;
+    }
+
+    @RequestMapping("/user")
+    public List<Customer> getUserDetailsAfterLogin(Authentication authentication) {
+
+        List<Customer> customers = customerRepository.findByEmail(authentication.getName());
+
+        if (!customers.isEmpty()) {
+            return customers;
+        } else {
+            return null;
+        }
     }
 }

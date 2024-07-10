@@ -22,7 +22,7 @@ public class ProjectSecurityConfig {
         http.authorizeHttpRequests(requests ->
             requests
                     //.anyRequest().authenticated()
-                    .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards").authenticated()
+                    .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
                     .requestMatchers("/notices", "/contact", "/register").permitAll()
         );
 

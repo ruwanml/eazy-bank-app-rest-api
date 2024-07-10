@@ -1,5 +1,6 @@
 package com.conceptandcoding.eazybankrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,22 +8,23 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "customer_id")
     private int id;
+
+    private String name;
 
     private String email;
 
+    @Column(name = "mobile_number")
+    private String mobileNumber;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
 
     private String role;
 
-    public Customer() {
-    }
-
-    public Customer(String email, String pwd, String role) {
-        this.email = email;
-        this.pwd = pwd;
-        this.role = role;
-    }
+    @Column(name = "create_dt")
+    private String createDate;
 
     public int getId() {
         return id;
@@ -54,5 +56,29 @@ public class Customer {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }
