@@ -2,6 +2,7 @@ package com.conceptandcoding.eazybankrestapi.config;
 
 import com.conceptandcoding.eazybankrestapi.filter.AuthoritiesLoggingAfterFilter;
 import com.conceptandcoding.eazybankrestapi.filter.CsrfCookieFilter;
+import com.conceptandcoding.eazybankrestapi.filter.JwtTokenGeneratorFilter;
 import com.conceptandcoding.eazybankrestapi.filter.RequestValidationBeforeFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,6 +50,8 @@ public class ProjectSecurityConfig {
         http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class);
 
         http.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class);
+
+        http.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
