@@ -1,9 +1,7 @@
 package com.conceptandcoding.eazybankrestapi.config;
 
-import com.conceptandcoding.eazybankrestapi.filter.AuthoritiesLoggingAfterFilter;
-import com.conceptandcoding.eazybankrestapi.filter.CsrfCookieFilter;
-import com.conceptandcoding.eazybankrestapi.filter.JwtTokenGeneratorFilter;
-import com.conceptandcoding.eazybankrestapi.filter.RequestValidationBeforeFilter;
+import com.conceptandcoding.eazybankrestapi.constant.SecurityConstant;
+import com.conceptandcoding.eazybankrestapi.filter.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -53,6 +51,8 @@ public class ProjectSecurityConfig {
 
         http.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
+        http.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class);
+
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
 
@@ -92,6 +92,7 @@ public class ProjectSecurityConfig {
         configs.setAllowedMethods(Arrays.asList("*"));
         configs.setAllowCredentials(true);
         configs.setAllowedHeaders(Arrays.asList("*"));
+        configs.setExposedHeaders(Arrays.asList(SecurityConstant.JWT_HEADER));
         configs.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -97,7 +97,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
                     .issuer("Eazy Bank")
                     .subject("JWT Token")
                     .claim("username", authentication.getName())
-                    .claim("authorites", populateAuthorities(authentication.getAuthorities()))
+                    .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .issuedAt(new Date())
                     .expiration(new Date(new Date().getTime() + 28800000)) // 8 hours
                     .signWith(secretKey)
