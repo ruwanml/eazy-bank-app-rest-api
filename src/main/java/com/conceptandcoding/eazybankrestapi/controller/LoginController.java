@@ -2,6 +2,7 @@ package com.conceptandcoding.eazybankrestapi.controller;
 
 import com.conceptandcoding.eazybankrestapi.entity.Customer;
 import com.conceptandcoding.eazybankrestapi.repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,12 @@ import java.util.List;
 @RestController
 public class LoginController {
 
+    @Autowired
     private CustomerRepository customerRepository;
+    //private PasswordEncoder passwordEncoder;
 
-    private PasswordEncoder passwordEncoder;
 
-    public LoginController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
-        this.customerRepository = customerRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+/*
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
         Customer savedCustomer = null;
@@ -48,6 +46,8 @@ public class LoginController {
         return response;
     }
 
+*/
+/*
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Authentication authentication) {
 
@@ -59,4 +59,6 @@ public class LoginController {
             return null;
         }
     }
+
+ */
 }

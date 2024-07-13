@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Component
+//@Component
 public class EazyBankUsernamePwdAuthenticationProvider implements AuthenticationProvider {
 
     private CustomerRepository customerRepository;

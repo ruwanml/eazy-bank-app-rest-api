@@ -45,13 +45,13 @@ public class ProjectSecurityConfig {
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
-        http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class);
+        //http.addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class);
 
-        http.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class);
+        //http.addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class);
 
-        http.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
+        //http.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
-        http.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class);
+        //http.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class);
 
         // By default, Spring Security framework protects all the paths (request calls) present inside the web application.
         // Ref: SpringBootWebSecurityConfiguration class ---> defaultSecurityFilterChain()
@@ -92,7 +92,7 @@ public class ProjectSecurityConfig {
         configs.setAllowedMethods(Arrays.asList("*"));
         configs.setAllowCredentials(true);
         configs.setAllowedHeaders(Arrays.asList("*"));
-        configs.setExposedHeaders(Arrays.asList(SecurityConstant.JWT_HEADER));
+        //configs.setExposedHeaders(Arrays.asList(SecurityConstant.JWT_HEADER));
         configs.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -101,7 +101,7 @@ public class ProjectSecurityConfig {
         return source;
     }
 
-    @Bean
+    //@Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
