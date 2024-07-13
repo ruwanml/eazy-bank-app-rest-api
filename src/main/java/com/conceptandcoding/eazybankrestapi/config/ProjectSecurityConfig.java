@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -22,6 +23,10 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        // configure KeycloakRoleConverter
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
 
         // CORS configurations - globally
         // Ref: https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
@@ -67,7 +72,7 @@ public class ProjectSecurityConfig {
                 // authorization rules by ROLES
                 .requestMatchers("/myAccount").hasRole("USER")
                 .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/myLoans").hasRole("USER")
+                .requestMatchers("/myLoans").authenticated()
                 .requestMatchers("/myCards").hasRole("USER")
                     // authentication rules
                     //.anyRequest().authenticated()
@@ -76,11 +81,17 @@ public class ProjectSecurityConfig {
                     .requestMatchers("/notices", "/contact", "/register").permitAll()
         );
 
-        http.formLogin(Customizer.withDefaults());
+        //http.formLogin(Customizer.withDefaults());
 
-        http.httpBasic(Customizer.withDefaults());
+        //http.httpBasic(Customizer.withDefaults());
 
         //http.csrf(csrf -> csrf.disable());
+
+        http.oauth2ResourceServer(rsc -> rsc
+                .jwt(jwtConfigurer -> jwtConfigurer
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter)
+                )
+        );
 
         return http.build();
     }

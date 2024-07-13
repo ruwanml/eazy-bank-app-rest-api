@@ -36,7 +36,7 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
         String username = authentication.getName();
         String endUserPwd = authentication.getCredentials().toString(); // plain-text
 
-        List<Customer> customers = customerRepository.findByEmail(username);
+        List<Customer> customers = new ArrayList<>(); //customerRepository.findByEmail(username);
 
         if (!customers.isEmpty()) {
 
